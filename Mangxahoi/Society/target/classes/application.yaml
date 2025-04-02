@@ -1,0 +1,22 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: Society
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/Society
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hien86446@gmail.com
+    password: mdyu hwtx stdb lcmh
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            required: true
+jwt:
+  signerKey: "vNY9sgAw7HYG+ACDFtDtj6INQf5gafQDF4AGLGRcJY3+iHVml3q75CQWbkojnpIp "

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/main"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:gravity="center"
+tools:context=".Activity.RegisterActivity">
+
+    <RelativeLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:background="@drawable/round_black_dark"
+            android:src="@drawable/default_avatar"
+            android:contentDescription="Avatar người dùng" />
+
+        <ImageView
+            android:id="@+id/uploadIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="5dp"
+            android:src="@drawable/ic_uploadimg"
+            android:background="@drawable/round_back_primary"
+            android:padding="5dp"/>
+    </RelativeLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/etUsernameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/round_black_dark">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/usernameET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_black_dark"
+        android:hint="Tài khoản"
+        android:inputType="text"
+        android:textSize="14sp"
+        android:padding="12dp"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/etPasswordLayout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    app:passwordToggleEnabled="true"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/round_black_dark">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/passwordET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_black_dark"
+        android:hint="Mật khẩu"
+        android:inputType="textPassword"
+        android:textSize="14sp"
+        android:padding="12dp"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/etFullnameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/round_black_dark">
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/fullnameET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_black_dark"
+        android:hint="Họ và tên"
+        android:inputType="text"
+        android:textSize="14sp"
+        android:padding="12dp"/>
+</com.google.android.material.textfield.TextInputLayout>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/round_black_dark">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etDateTVLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@drawable/round_black_dark">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dateET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:background="@drawable/round_black_dark"
+            android:hint="Ngày sinh"
+            android:textSize="14sp"
+            android:padding="12dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <ImageView
+        android:id="@+id/datePickerBtn"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/calendar" />
+</RelativeLayout>
+    <!-- Giới tính -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/round_black_dark"
+        android:gravity="center_vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giới tính"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginStart="10dp" />
+        <RadioGroup
+            android:id="@+id/genderRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/maleRdb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Nam"
+                android:textSize="14sp" />
+            <RadioButton
+                android:id="@+id/femaleRdb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:text="Nữ"
+                android:textSize="14sp" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/etPhoneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/round_black_dark">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phoneET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_black_dark"
+            android:hint="Số điện thoại"
+            android:inputType="text"
+            android:textSize="14sp"
+            android:padding="12dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/signUpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/round_back_primary"
+        android:text="Đăng Ký"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="15dp"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn đã có tài khoản?"
+            />
+        <TextView
+            android:id="@+id/signInBtn"
+            android:layout_marginStart="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đăng nhập"
+            android:textColor="@color/primary"
+            />
+    </LinearLayout>
+</LinearLayout>

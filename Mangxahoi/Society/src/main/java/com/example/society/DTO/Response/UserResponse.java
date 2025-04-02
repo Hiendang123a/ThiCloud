@@ -1,0 +1,20 @@
+package com.example.society.DTO.Response;;
+import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponse {
+    private String userID;
+    private String name;
+    private String gender;
+    private Date dob;
+    private String bio;
+    private String phone;
+    private String avatar;
+}
