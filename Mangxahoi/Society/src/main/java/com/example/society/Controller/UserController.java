@@ -1,11 +1,7 @@
 package com.example.society.Controller;
 
 import com.example.society.DTO.Response.APIResponse;
-import com.example.society.DTO.Response.BubbleResponse;
 import com.example.society.DTO.Response.UserResponse;
-import com.example.society.Entity.FollowInfo;
-import com.example.society.Security.TokenProvider;
-import com.example.society.Service.Interface.FriendShipService;
 import com.example.society.Service.Interface.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +27,7 @@ public class UserController {
         apiResponse.setResult(userService.getUser(userId));
         return apiResponse;
     }
-
+    /*
     @GetMapping("/search")
     public ResponseEntity<List<FollowInfo>> searchUsers(
             @RequestParam String query,
@@ -40,4 +36,6 @@ public class UserController {
     ) {
         return ResponseEntity.ok(userService.searchUsers(query, page, size));
     }
+
+     */
 }

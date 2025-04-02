@@ -1,7 +1,6 @@
 package com.example.society.Repository;
 
 import com.example.society.Entity.Account;
-import com.example.society.Entity.FollowInfo;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.repository.Aggregation;
@@ -14,6 +13,7 @@ import java.util.Optional;
 public interface IAccountRepository extends MongoRepository<Account, ObjectId> {
     Optional<Account> findByUsername(String username);
     boolean existsByUsername(String username);
+    /*
     @Aggregation(pipeline = {
             "{ $match: { 'username': { $regex: ?0, $options: 'i' } } }",
             "{ $lookup: { from: 'users', localField: 'userID', foreignField: '_id', as: 'user' } }",
@@ -21,4 +21,5 @@ public interface IAccountRepository extends MongoRepository<Account, ObjectId> {
             "{ $project: { 'username': 1, 'user.name': 1, 'user.avatar': 1 } }"
     })
     Page<FollowInfo> findFollowInfoByUsernameRegex(String query, Pageable pageable);
+     */
 }

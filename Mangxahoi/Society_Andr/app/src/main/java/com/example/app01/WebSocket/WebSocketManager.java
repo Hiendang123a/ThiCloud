@@ -13,8 +13,8 @@ import ua.naiksoftware.stomp.StompClient;
 
 public class WebSocketManager {
     private static final String TAG = "WebSocketManager";
-    //private static final String WS_URL = "ws://10.0.2.2:8080/ws";
-    private static final String WS_URL = "ws://192.168.28.175:8080/ws"; // WebSocket URL
+    private static final String WS_URL = "ws://10.0.2.2:8080/ws";
+    //private static final String WS_URL = "ws://192.168.28.175:8080/ws"; // WebSocket URL
     private StompClient stompClient;
     private Disposable topicSubscription;
     private MessageListener messageListener;

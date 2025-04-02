@@ -26,6 +26,5 @@ public class Account {
     private int failedAttempts;
     private Date lastLoginAt;
     private Date createdAt;
-    @Field(name = "is_private")
     private boolean isPrivate = false;
 }

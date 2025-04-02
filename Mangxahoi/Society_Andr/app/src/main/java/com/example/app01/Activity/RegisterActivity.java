@@ -112,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
             String dobString = dateET.getText().toString();
             try {
                 Date dob = dateFormat.parse(dobString);
-                UserDTO userDTO = new UserDTO(fullname,gender,dob,address,hometown,"");
+                UserDTO userDTO = new UserDTO(fullname,gender,dob,phone,"");
                 AccountDTO accountDTO = new AccountDTO(username,password);
                 RegisterUserRequest registerUserRequest = new RegisterUserRequest(userDTO,accountDTO);
 
@@ -130,14 +130,14 @@ public class RegisterActivity extends AppCompatActivity {
                 {
                     errors.add(ValidationHelper.INVALID_PASSWORD);
                 }
+
                 if (ValidationHelper.isEmpty(fullname))
                     errors.add(ValidationHelper.EMPTY_FULLNAME);
 
-                if (ValidationHelper.isEmpty(address))
-                    errors.add(ValidationHelper.EMPTY_ADDRESS);
-
-                if (ValidationHelper.isEmpty(hometown))
-                    errors.add(ValidationHelper.EMPTY_HOMETOWN);
+                if(ValidationHelper.isEmpty(phone))
+                    errors.add(ValidationHelper.EMPTY_PHONE);
+                else if (!ValidationHelper.isValidPhone(phone))
+                    errors.add(ValidationHelper.INVALID_PHONE);
 
                 if(!ValidationHelper.isValidDob(dob))
                     errors.add(ValidationHelper.UNDER_AGE);

@@ -1,7 +1,9 @@
 package com.example.society.Exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@Getter
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
     SYSTEM_ERROR(5000, "System error: User data not found!", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -16,8 +18,10 @@ public enum ErrorCode {
     NAME_FIELD(1007, "Name cannot be empty", HttpStatus.BAD_REQUEST),
     GENDER_FIELD(1008, "Gender cannot be empty", HttpStatus.BAD_REQUEST),
     DOB_FIELD(1009, "Date of birth cannot be null", HttpStatus.BAD_REQUEST),
-    HOMETOWN_FIELD(1011, "Phone cannot be empty", HttpStatus.BAD_REQUEST),
-    USER_NOT_FOUND(1012, "User not found", HttpStatus.BAD_REQUEST),
+    USER_NOT_FOUND(1010, "User not found", HttpStatus.BAD_REQUEST),
+    PHONE_FIELD(1011, "Phone cannot be empty", HttpStatus.BAD_REQUEST),
+    INVALID_PHONE(1012, "Invalid phone", HttpStatus.BAD_REQUEST),
+
     INVALID_TOKEN(1001, "Invalid Token!", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1001, "Access denied: Token is required to use this API", HttpStatus.UNAUTHORIZED),
     MESSAGE_NULL(1013, "Message ís not allowed null", HttpStatus.BAD_REQUEST),
@@ -32,9 +36,9 @@ public enum ErrorCode {
     WEAK_PASSWORD_NO_LOWERCASE(2102, "Password must contain at least one lowercase letter", HttpStatus.BAD_REQUEST),
     WEAK_PASSWORD_NO_UPPERCASE(2103, "Password must contain at least one uppercase letter", HttpStatus.BAD_REQUEST);
 
-    private int code;
-    private String message;
-    private HttpStatus httpStatus;
+    private final int code;
+    private final String message;
+    private final HttpStatus httpStatus;
 
     ErrorCode(int code, String message, HttpStatus httpStatus) {
         this.code = code;
@@ -42,14 +46,4 @@ public enum ErrorCode {
         this.httpStatus = httpStatus;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
 }

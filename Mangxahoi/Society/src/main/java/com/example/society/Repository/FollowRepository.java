@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface FollowRepository extends MongoRepository<Follow, ObjectId> {
-
+    /*
     // Lấy danh sách những người user đang follow (đã ACCEPT)
     @Query("{'senderUsername': ?0, 'action': 'ACCEPT'}")
     List<String> findFollowing(String username);
@@ -44,4 +44,6 @@ public interface FollowRepository extends MongoRepository<Follow, ObjectId> {
 
     // Kiểm tra xem đã có yêu cầu follow với action nào đó chưa
     boolean existsBySenderUsernameAndReceiverUsernameAndAction(String senderUsername, String receiverUsername, FollowAction action);
+     */
 }
+

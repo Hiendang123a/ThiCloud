@@ -49,7 +49,7 @@ public class BubbleAdapter extends RecyclerView.Adapter<BubbleAdapter.BubbleView
             String lastName = parts[parts.length - 1]; // Lấy phần tử cuối cùng
             holder.getBubble_txtUser().setText(lastName);
         }
-        if(!bubbleResponse.getAvatar().isEmpty()) {
+        if(bubbleResponse.getAvatar()!= null && !bubbleResponse.getAvatar().isEmpty()) {
             GoogleDriveHelper.loadImage(context,bubbleResponse.getAvatar(),holder.bubble_imgUser);
         }
     }

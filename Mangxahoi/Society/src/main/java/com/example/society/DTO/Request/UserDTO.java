@@ -1,6 +1,7 @@
 package com.example.society.DTO.Request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mongodb.lang.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,8 +26,13 @@ public class UserDTO {
     @NotNull(message = "DOB_FIELD")
     private Date dob;
 
-    @NotBlank(message = "HOMETOWN_FIELD")
+    @Nullable
+    private String bio;
+
+    @Pattern(regexp = "0\\d{9}", message = "INVALID_PHONE")
+    @NotBlank(message = "PHONE_FIELD")
     private String phone;
 
+    @Nullable
     private String avatar;
 }

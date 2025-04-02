@@ -1,8 +1,6 @@
 package com.example.society.Service.Impl;
 
 import com.example.society.DTO.Response.UserResponse;
-import com.example.society.Entity.Account;
-import com.example.society.Entity.FollowInfo;
 import com.example.society.Entity.User;
 import com.example.society.Exception.AppException;
 import com.example.society.Exception.ErrorCode;
@@ -36,7 +34,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponseDTO(user);
     }
 
-
+    /*
     public List<FollowInfo> searchUsers(String query, int page, int size) {
         if (page > 4) {
             page = 4; // Giới hạn tối đa 5 trang
@@ -49,4 +47,5 @@ public class UserServiceImpl implements UserService {
         // 2. Lấy FollowInfo từ Profile theo danh sách username
         return accountPage.getContent();
     }
+     */
 }

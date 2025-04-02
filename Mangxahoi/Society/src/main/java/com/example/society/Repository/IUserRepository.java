@@ -1,7 +1,6 @@
 package com.example.society.Repository;
 
 import com.example.society.DTO.Response.BubbleResponse;
-import com.example.society.Entity.FollowInfo;
 import com.example.society.Entity.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;

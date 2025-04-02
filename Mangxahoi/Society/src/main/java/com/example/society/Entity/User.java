@@ -1,4 +1,5 @@
 package com.example.society.Entity;
+import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
