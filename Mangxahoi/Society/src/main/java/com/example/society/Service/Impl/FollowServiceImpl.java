@@ -145,4 +145,47 @@ public class FollowServiceImpl implements FollowService {
         }
         return bubbleResponseList;
     }
+
+    @Override
+    public List<BubbleResponse> getFollowRequests(ObjectId userId) {
+        List<BubbleResponse> bubbleResponseList = new ArrayList<>();
+        List<Follow> followList = followRepository.getFollowRequests(userId);
+        for (Follow follow : followList) {
+            userRepository.findUserByUserID(follow.getUser1()).ifPresent(user -> {
+                BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());
+                bubbleResponseList.add(bubbleResponse);
+            });
+        }
+        return bubbleResponseList;
+    }
+
+    @Override
+    public int getFollowersCount(ObjectId userId) {
+        return followRepository.countFollowers(userId);
+    }
+
+    @Override
+    public int getFollowingCount(ObjectId userId) {
+        return followRepository.countFollowing(userId);
+    }
+
+    @Override
+    public boolean isFollowing(ObjectId senderId, ObjectId receiverId) {
+        return followRepository.existsByUser1AndUser2AndStatus(senderId, receiverId, FollowAction.ACCEPT);
+    }
+
+    @Override
+    public String removeFollower(ObjectId senderId, ObjectId receiverId) {
+        Optional<Follow> follow = followRepository.findByUser1AndUser2AndStatus(receiverId, senderId,FollowAction.ACCEPT);
+        if (follow.isEmpty()) {
+            return "Follow record not found!";
+        }
+        followRepository.delete(follow.get());
+        return "Removed";
+    }
+
+    @Override
+    public boolean hasPendingRequest(ObjectId senderId, ObjectId receiverId) {
+        return followRepository.existsByUser1AndUser2AndStatus(senderId, receiverId, FollowAction.REQUEST);
+    }
 }

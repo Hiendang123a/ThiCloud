@@ -10,9 +10,23 @@ import java.util.Optional;
 
 public interface IFollowRepository extends MongoRepository<Follow, ObjectId> {
     Optional<Follow> findByUser1AndUser2AndStatus(ObjectId user1, ObjectId user2, FollowAction status);
+
     Optional<Follow> findByUser1AndUser2(ObjectId user1, ObjectId user2);
+
     @Query(value = "{ 'user1': ?0, 'status': 'ACCEPT' }")
     List<Follow> getFollowing(ObjectId userId);
+
     @Query(value = "{ 'user2': ?0, 'status': 'ACCEPT' }")
     List<Follow> getFollowes(ObjectId userId);
+
+    @Query(value = "{ 'user2': ?0, 'status': 'REQUEST' }")
+    List<Follow> getFollowRequests(ObjectId userId);
+
+    @Query(value = "{ 'user1': ?0, 'status': 'ACCEPT' }", count = true)
+    int countFollowing(ObjectId userId);
+
+    @Query(value = "{ 'user2': ?0, 'status': 'ACCEPT' }", count = true)
+    int countFollowers(ObjectId userId);
+
+    boolean existsByUser1AndUser2AndStatus(ObjectId user1, ObjectId user2, FollowAction status);
 }

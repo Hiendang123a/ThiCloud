@@ -14,5 +14,11 @@ public interface FollowService {
     FollowResponse cancelFollowRequest(ObjectId senderId, ObjectId receiverId);
     List<BubbleResponse> getFollowing(ObjectId userId);
     List<BubbleResponse> getFollowers(ObjectId userId);
+    List<BubbleResponse> getFollowRequests(ObjectId userId);
+    int getFollowersCount(ObjectId userId);
+    int getFollowingCount(ObjectId userId);
+    boolean isFollowing(ObjectId senderId, ObjectId receiverId);
+    String removeFollower(ObjectId senderId, ObjectId receiverId);
+    boolean hasPendingRequest(ObjectId senderId, ObjectId receiverId);
 
 }
