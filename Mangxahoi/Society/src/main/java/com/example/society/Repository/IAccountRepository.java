@@ -13,6 +13,9 @@ import java.util.Optional;
 public interface IAccountRepository extends MongoRepository<Account, ObjectId> {
     Optional<Account> findByUsername(String username);
     boolean existsByUsername(String username);
+    Optional<Account> findByUserID(ObjectId objectId);
+
+
     /*
     @Aggregation(pipeline = {
             "{ $match: { 'username': { $regex: ?0, $options: 'i' } } }",

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -39,8 +38,8 @@ public class ChatActivity extends AppCompatActivity {
     private BubbleAdapter bubbleAdapter;
     private ChatAdapter chatAdapter;
     private List<BubbleResponse> bubbleResponseList;
-
     private List<LastMessageResponse> lastMessageResponseList;
+    private List<String> status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +64,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         }));
-
-
-
         rc_bubbles = findViewById(R.id.rc_bubbles);
         rc_messages = findViewById(R.id.rc_messages);
         logoutButton = findViewById(R.id.logoutButton);
@@ -79,7 +75,8 @@ public class ChatActivity extends AppCompatActivity {
         });
         Retrofit retrofit = RetrofitClient.getRetrofitInstance(getApplicationContext());
         bubbleResponseList = new ArrayList<>();
-        bubbleAdapter = new BubbleAdapter(ChatActivity.this, bubbleResponseList);
+        status = new ArrayList<>();
+        bubbleAdapter = new BubbleAdapter(ChatActivity.this, bubbleResponseList,status);
         rc_bubbles.setAdapter(bubbleAdapter);
         rc_bubbles.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
@@ -93,7 +90,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void getLastMessage(Retrofit retrofit){
         MessageService messageService = retrofit.create(MessageService.class);
-
         Call<APIResponse<List<LastMessageResponse>>> call = messageService.lastMessage();
         call.enqueue(new Callback<>() {
             @Override
@@ -104,8 +100,15 @@ public class ChatActivity extends AppCompatActivity {
                         List<BubbleResponse> bubbleResponses = apiResponse.getResult().stream()
                                 .map(LastMessageResponse::getBubbleResponse)
                                 .collect(Collectors.toList());
+
+                        List<String> responseStatus = apiResponse.getResult().stream()
+                                .map(LastMessageResponse::getFollowStatus)
+                                .collect(Collectors.toList());
                         bubbleResponseList.clear();
                         bubbleResponseList.addAll(bubbleResponses);
+
+                        status.clear();
+                        status.addAll(responseStatus);
                         bubbleAdapter.notifyDataSetChanged();
                         // Cập nhật danh sách tin nhắn
                         lastMessageResponseList.clear();

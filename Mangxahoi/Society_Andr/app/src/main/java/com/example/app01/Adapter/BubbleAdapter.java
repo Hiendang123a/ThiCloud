@@ -22,12 +22,14 @@ import lombok.Setter;
 
 public class BubbleAdapter extends RecyclerView.Adapter<BubbleAdapter.BubbleViewHolder> {
     private final List<BubbleResponse> bubbleResponses;
+    private final List<String> status;
     private final Context context;
     private final LayoutInflater layoutInflater;
 
 
-    public BubbleAdapter(Context context, List<BubbleResponse> bubbleResponses) {
+    public BubbleAdapter(Context context, List<BubbleResponse> bubbleResponses, List<String> status) {
         this.bubbleResponses = bubbleResponses;
+        this.status = status;
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -78,6 +80,7 @@ public class BubbleAdapter extends RecyclerView.Adapter<BubbleAdapter.BubbleView
                     intent.putExtra("receiverID",bubbleResponse.getUserID());
                     intent.putExtra("receiverName",bubbleResponse.getName());
                     intent.putExtra("receiverAvt",bubbleResponse.getAvatar());
+                    intent.putExtra("status",status.get(position));
                     context.startActivity(intent);
                 }
             });

@@ -11,4 +11,5 @@ import lombok.Setter;
 public class LastMessageResponse {
     private BubbleResponse bubbleResponse;
     private MessageResponse messageResponse;
+    private String followStatus;
 }

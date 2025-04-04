@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,4 +11,5 @@ import java.util.List;
 public class LastMessageResponse {
     private BubbleResponse bubbleResponse;
     private MessageResponse messageResponse;
+    private String followStatus;
 }

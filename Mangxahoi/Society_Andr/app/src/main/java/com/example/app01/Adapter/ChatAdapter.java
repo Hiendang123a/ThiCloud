@@ -122,7 +122,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
                     intent.putExtra("receiverID",lastMessageResponse.getBubbleResponse().getUserID());
                     intent.putExtra("receiverName",lastMessageResponse.getBubbleResponse().getName());
                     intent.putExtra("receiverAvt",lastMessageResponse.getBubbleResponse().getAvatar());
-                    context.startActivity(intent);                }
+                    intent.putExtra("status",lastMessageResponse.getFollowStatus());
+                    context.startActivity(intent);
+                }
             });
         }
 

@@ -7,16 +7,20 @@ import com.example.app01.DTO.Request.CreateMessageRequest;
 import com.example.app01.DTO.Response.MessageResponse;
 import com.google.gson.Gson;
 import io.reactivex.disposables.Disposable;
+import lombok.Getter;
+import lombok.Setter;
 import ua.naiksoftware.stomp.Stomp;
 import ua.naiksoftware.stomp.StompClient;
 
 
 public class WebSocketManager {
     private static final String TAG = "WebSocketManager";
-    private static final String WS_URL = "ws://10.0.2.2:8080/ws";
-    //private static final String WS_URL = "ws://192.168.28.175:8080/ws"; // WebSocket URL
+    //private static final String WS_URL = "ws://10.0.2.2:8080/ws";
+    private static final String WS_URL = "ws://192.168.1.14:8080/ws"; // WebSocket URL
     private StompClient stompClient;
     private Disposable topicSubscription;
+    @Setter
+    @Getter
     private MessageListener messageListener;
 
     public void connectWebSocket() {
@@ -56,11 +60,4 @@ public class WebSocketManager {
         void onMessageReceived(MessageResponse messageResponse);
     }
 
-    public MessageListener getMessageListener() {
-        return messageListener;
-    }
-
-    public void setMessageListener(MessageListener messageListener) {
-        this.messageListener = messageListener;
-    }
 }

@@ -1,16 +1,15 @@
 package com.example.society.Service.Impl;
 
+import com.example.society.DTO.Response.BubbleResponse;
 import com.example.society.DTO.Response.UserResponse;
 import com.example.society.Entity.User;
 import com.example.society.Exception.AppException;
 import com.example.society.Exception.ErrorCode;
 import com.example.society.Mapper.UserMapper;
-import com.example.society.Repository.IAccountRepository;
 import com.example.society.Repository.IUserRepository;
 import com.example.society.Service.Interface.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,6 @@ public class UserServiceImpl implements UserService {
     IUserRepository userRepository;
 
     @Autowired
-    IAccountRepository accountRepository;
-    @Autowired
     UserMapper userMapper;
     @Override
     public UserResponse getUser(String userId) {
@@ -34,18 +31,18 @@ public class UserServiceImpl implements UserService {
         return userMapper.toUserResponseDTO(user);
     }
 
-    /*
-    public List<FollowInfo> searchUsers(String query, int page, int size) {
-        if (page > 4) {
-            page = 4; // Giới hạn tối đa 5 trang
+    @Override
+    public List<BubbleResponse> searchUsers(String query, String userId) {
+        //Luôn lấy ra 10 người
+        Pageable pageable = PageRequest.of(0, 10);
+        List<User> users = userRepository.findByNameContainingIgnoreCase(query, pageable).getContent();
+
+        List<BubbleResponse> bubbleResponseList = new ArrayList<>();
+        for (User user : users) {
+            BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(),user.getName(),user.getAvatar());
+            if(!user.getUserID().toString().equals(userId))
+                bubbleResponseList.add(bubbleResponse);
         }
-        Pageable pageable = PageRequest.of(page, size);
-
-        // 1. Lấy danh sách follow từ username
-        Page<FollowInfo> accountPage = accountRepository.findFollowInfoByUsernameRegex(query, pageable);
-
-        // 2. Lấy FollowInfo từ Profile theo danh sách username
-        return accountPage.getContent();
+        return bubbleResponseList;
     }
-     */
 }

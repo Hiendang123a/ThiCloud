@@ -1,6 +1,7 @@
 package com.example.society.Controller;
 
 import com.example.society.DTO.Response.APIResponse;
+import com.example.society.DTO.Response.BubbleResponse;
 import com.example.society.DTO.Response.UserResponse;
 import com.example.society.Service.Interface.UserService;
 import org.bson.types.ObjectId;
@@ -27,15 +28,12 @@ public class UserController {
         apiResponse.setResult(userService.getUser(userId));
         return apiResponse;
     }
-    /*
-    @GetMapping("/search")
-    public ResponseEntity<List<FollowInfo>> searchUsers(
-            @RequestParam String query,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        return ResponseEntity.ok(userService.searchUsers(query, page, size));
-    }
 
-     */
+    @GetMapping("/search")
+    public APIResponse<List<BubbleResponse>> searchUsers(@RequestParam String query) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        APIResponse<List<BubbleResponse>> apiResponse = new APIResponse<>();
+        apiResponse.setResult(userService.searchUsers(query,userId));
+        return apiResponse;
+    }
 }

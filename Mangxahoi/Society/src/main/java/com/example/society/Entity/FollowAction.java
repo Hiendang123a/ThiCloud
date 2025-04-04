@@ -1,5 +1,5 @@
 package com.example.society.Entity;
 
 public enum FollowAction {
-    REQUEST, ACCEPT, REJECT, UNFOLLOW
+    REQUEST, ACCEPT
 }

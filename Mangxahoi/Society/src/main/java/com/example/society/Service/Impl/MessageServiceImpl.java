@@ -6,12 +6,15 @@ import com.example.society.DTO.Request.ReadMessageRequest;
 import com.example.society.DTO.Response.BubbleResponse;
 import com.example.society.DTO.Response.LastMessageResponse;
 import com.example.society.DTO.Response.MessageResponse;
+import com.example.society.Entity.Follow;
+import com.example.society.Entity.FollowAction;
 import com.example.society.Entity.Message;
 import com.example.society.Exception.AppException;
 import com.example.society.Exception.ErrorCode;
 import com.example.society.Mapper.MessageMapper;
+import com.example.society.Repository.IFollowRepository;
 import com.example.society.Repository.IMessageRepository;
-import com.example.society.Service.Interface.FriendShipService;
+import com.example.society.Repository.IUserRepository;
 import com.example.society.Service.Interface.MessageService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +30,11 @@ import java.util.*;
 public class MessageServiceImpl implements MessageService {
     @Autowired
     IMessageRepository messageRepository;
+    @Autowired
+    private IFollowRepository followRepository;
 
     @Autowired
-    FriendShipService friendShipService;
+    IUserRepository userRepository;
 
     @Autowired
     MessageMapper messageMapper;
@@ -54,11 +59,7 @@ public class MessageServiceImpl implements MessageService {
         Pageable pageable = PageRequest.of(0, readMessageRequest.getLimit(), Sort.by(Sort.Direction.DESC, "sentAt"));
         List<Message> messages;
         Date currentTimestamp = new Date();
-        if (cursor == null) {
-            messages = messageRepository.findMessagesBetweenUsers(senderID, receiverID, currentTimestamp, pageable);
-        } else {
-            messages = messageRepository.findMessagesBetweenUsers(senderID, receiverID, cursor, pageable);
-        }
+        messages = messageRepository.findMessagesBetweenUsers(senderID, receiverID, Objects.requireNonNullElse(cursor, currentTimestamp), pageable);
         List<MessageResponse> responses = new ArrayList<>();
         for (Message message : messages) {
             responses.add(messageMapper.toMessageResponse(message));
@@ -90,49 +91,52 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<LastMessageResponse> lastMessage(String userID) {
-        List<BubbleResponse> bubbleResponseList = friendShipService.getFriendsList(new ObjectId(userID));
-        List<MessageResponse> messageResponseList = new ArrayList<>();
+        ObjectId userObjectId = new ObjectId(userID);
         List<LastMessageResponse> lastMessageResponseList = new ArrayList<>();
-        Pageable pageable = PageRequest.of(0, 1, Sort.by(Sort.Direction.DESC, "sentAt"));
 
-        // Thêm tin nhắn cho bản thân mình là null vì không hiển thị
-        messageResponseList.add(null);
-
-        for (int i = 1; i < bubbleResponseList.size(); i++) {
-            BubbleResponse bubbleResponse = bubbleResponseList.get(i);
-            Message message = messageRepository.findLastMessage(new ObjectId(userID), new ObjectId(bubbleResponse.getUserID()), pageable)
-                    .stream()
-                    .findFirst()
-                    .orElse(null);
-            messageResponseList.add(messageMapper.toMessageResponse(message));
-        }
-
-        // Danh sách chỉ mục để theo dõi thứ tự
-        List<Integer> indexList = new ArrayList<>();
-        for (int i = 1; i < bubbleResponseList.size(); i++) {
-            indexList.add(i);
-        }
-
-        // Sắp xếp chỉ mục theo `sentAt`, nếu null thì đưa ra sau
-        indexList.sort((i1, i2) -> {
-            MessageResponse m1 = messageResponseList.get(i1);
-            MessageResponse m2 = messageResponseList.get(i2);
-
-            if (m1 == null && m2 == null) return 0;
-            if (m1 == null) return 1;
-            if (m2 == null) return -1;
-
-            return m2.getSentAt().compareTo(m1.getSentAt()); // Giảm dần
+        // Thêm bản thân người dùng vào đầu danh sách (chỉ có thông tin bản thân, không có tin nhắn)
+        userRepository.findUserByUserID(userObjectId).ifPresent(user -> {
+            BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());
+            lastMessageResponseList.add(new LastMessageResponse(bubbleResponse, null, null));
         });
 
+        // Lấy danh sách tin nhắn gần nhất
+        List<Message> lastMessages = messageRepository.findLastMessages(userObjectId);
 
+        for (Message message : lastMessages) {
+            // Xác định người còn lại trong tin nhắn (người gửi hoặc người nhận)
+            ObjectId otherUserId = message.getSenderID().equals(userObjectId) ? message.getReceiverID() : message.getSenderID();
 
-        lastMessageResponseList.add(new LastMessageResponse(bubbleResponseList.get(0),messageResponseList.get(0))); // Giữ nguyên phần tử đầu
+            // Follow chéo
+            boolean isFollowed = isMutualFollow(message.getSenderID(), message.getReceiverID());
 
-        for (int index : indexList) {
-            lastMessageResponseList.add(new LastMessageResponse(bubbleResponseList.get(index),messageResponseList.get(index)));
+            // Lọc tin nhắn nhận được và kiểm tra điều kiện theo dõi
+            if (message.getReceiverID().equals(userObjectId)) {
+                if (isFollowed) {
+                    // Thêm tin nhắn vào danh sách nếu người gửi đã follow mình
+                    userRepository.findUserByUserID(otherUserId).ifPresent(user -> {
+                        BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());
+                        MessageResponse messageResponse = messageMapper.toMessageResponse(message);
+                        lastMessageResponseList.add(new LastMessageResponse(bubbleResponse, messageResponse, "INBOX"));
+                    });
+                }
+            } else {
+                // Tin nhắn gửi đi
+                String status = isFollowed ? "INBOX" : "PENDING";
+                userRepository.findUserByUserID(otherUserId).ifPresent(user -> {
+                    BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());
+                    MessageResponse messageResponse = messageMapper.toMessageResponse(message);
+                    lastMessageResponseList.add(new LastMessageResponse(bubbleResponse, messageResponse, status));
+                });
+            }
         }
 
         return lastMessageResponseList;
+    }
+
+    private boolean isMutualFollow(ObjectId user1, ObjectId user2) {
+        Optional<Follow> follow1 = followRepository.findByUser1AndUser2AndStatus(user1, user2, FollowAction.ACCEPT);
+        Optional<Follow> follow2 = followRepository.findByUser1AndUser2AndStatus(user2, user1, FollowAction.ACCEPT);
+        return follow1.isPresent() && follow2.isPresent();
     }
 }

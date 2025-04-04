@@ -84,6 +84,8 @@ public class MessageActivity extends AppCompatActivity {
         String receiverID = getIntent().getStringExtra("receiverID");
         String receiverName = getIntent().getStringExtra("receiverName");
         String receiverAvt = getIntent().getStringExtra("receiverAvt");
+        String status = getIntent().getStringExtra("status");
+        Toast.makeText(this,"Status"+ status,Toast.LENGTH_SHORT).show();
         txt_user_name.setText(receiverName);
         if(receiverAvt != null && !receiverAvt.isEmpty())
             GoogleDriveHelper.loadImage(this,receiverAvt,img_avatar);
@@ -130,8 +132,14 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItem = 0;
+                if (layoutManager != null) {
+                    lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+                }
+                int totalItemCount = 0;
+                if (layoutManager != null) {
+                    totalItemCount = layoutManager.getItemCount();
+                }
 
                 if (isFirstLoad) {
                     isFirstLoad = false;
