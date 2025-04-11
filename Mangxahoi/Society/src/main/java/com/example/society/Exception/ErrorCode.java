@@ -34,7 +34,9 @@ public enum ErrorCode {
 
     WEAK_PASSWORD_TOO_SHORT(2101, "Password must be at least 8 characters long", HttpStatus.BAD_REQUEST),
     WEAK_PASSWORD_NO_LOWERCASE(2102, "Password must contain at least one lowercase letter", HttpStatus.BAD_REQUEST),
-    WEAK_PASSWORD_NO_UPPERCASE(2103, "Password must contain at least one uppercase letter", HttpStatus.BAD_REQUEST);
+    WEAK_PASSWORD_NO_UPPERCASE(2103, "Password must contain at least one uppercase letter", HttpStatus.BAD_REQUEST),
+
+    POST_NOT_EXITS(2104,"Post not exits with postID",HttpStatus.BAD_REQUEST);
 
     private final int code;
     private final String message;

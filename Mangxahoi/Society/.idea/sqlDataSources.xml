@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DdlMappings">
+    <mapping uuid="d34d5619-08b2-43a6-a574-b7fe8c9c002d" name="mongodb@localhost Mapping">
+      <data-sources db="f8e8aa50-7835-4351-8f8f-ab4bb765245e" />
+      <scope>
+        <node kind="schema" qname="Society" />
+      </scope>
+    </mapping>
+  </component>
+</project>

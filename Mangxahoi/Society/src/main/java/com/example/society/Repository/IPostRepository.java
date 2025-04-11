@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface IPostRepository extends MongoRepository<Post, ObjectId> {
     Optional<List<Post>> findAllByUserIDOrderByCreatedAtDesc(ObjectId userID);
 
+    Optional<Post> findByPostID(ObjectId postID);
+
     Page<Post> findByUserIDIn(List<ObjectId> userIDs, Pageable pageable);
 
     @Query("{ 'userID': { $in: ?0 }}")

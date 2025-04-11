@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,9 +21,9 @@ public class PostComment {
     private ObjectId commentID;
     private ObjectId userID;
     private String content;
-    private String imageName;
-    @Field(name = "created_at")
     private Date createdAt = new Date();
-    private List<ObjectId> repliesComment = new ArrayList<>();
-    private List<ObjectId> repliesEmotion = new ArrayList<>();
+    private List<ObjectId> emotions = new ArrayList<>();
+    private List<ObjectId> comments = new ArrayList<>();
+    private int emotionsCount;
+    private int commentsCount;
 }

@@ -1,12 +1,13 @@
 package com.example.society.DTO.Response;
 
 import com.mongodb.lang.Nullable;
+import lombok.Getter;
 import org.bson.types.ObjectId;
 
+@Getter
 public class BubbleResponse {
     private String userID;
     private String name;
-    @Nullable
     private String avatar;
     public BubbleResponse() {
     }
@@ -20,18 +21,6 @@ public class BubbleResponse {
         this.name = name;
         this.avatar = ""; // Đặt giá trị mặc định nếu không có avatar
     }
-    public String getUserID() {
-        return userID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
     public void setAvatar(@Nullable String avatar) {
         this.avatar = avatar;
     }

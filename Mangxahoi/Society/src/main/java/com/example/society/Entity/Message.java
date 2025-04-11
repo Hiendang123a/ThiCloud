@@ -31,18 +31,4 @@ public class Message {
     private Date editedAt;
     @JsonProperty("isDeleted")
     private boolean isDeleted;
-
-    public void setContent(String content) {
-        if (content != null && imageUrl != null) {
-            throw new IllegalArgumentException("Only one of content or imageUrl can be non-null");
-        }
-        this.content = content;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        if (content != null && imageUrl != null) {
-            throw new IllegalArgumentException("Only one of content or imageUrl can be non-null");
-        }
-        this.imageUrl = imageUrl;
-    }
 }

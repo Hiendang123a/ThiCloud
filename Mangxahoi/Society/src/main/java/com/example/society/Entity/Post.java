@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +24,9 @@ public class Post {
     private ObjectId userID;
     private String content;
     private String imageUrl;
-    private List<ObjectId> emotions;
-    private List<ObjectId> comments;
+    private List<ObjectId> emotions = new ArrayList<>();
+    private List<ObjectId> comments = new ArrayList<>();
     private Date createdAt = new Date();
-    @Field("emotionsCount")
     private int emotionsCount;
     private int commentsCount;
 }

@@ -17,7 +17,6 @@ import java.util.Date;
 public class CommentEmotion {
     @Id
     private ObjectId emotionID;
-    private ObjectId commentID;
     private ObjectId userID;
     private Date createdAt;
 }
