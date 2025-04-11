@@ -136,7 +136,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public List<BubbleResponse> getFollowers(ObjectId userId) {
         List<BubbleResponse> bubbleResponseList = new ArrayList<>();
-        List<Follow> followList = followRepository.getFollowes(userId);
+        List<Follow> followList = followRepository.getFollower(userId);
         for (Follow follow : followList) {
             userRepository.findUserByUserID(follow.getUser1()).ifPresent(user -> {
                 BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());

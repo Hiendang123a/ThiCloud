@@ -8,21 +8,15 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 import java.util.Optional;
 
 public interface IAccountRepository extends MongoRepository<Account, ObjectId> {
     Optional<Account> findByUsername(String username);
     boolean existsByUsername(String username);
     Optional<Account> findByUserID(ObjectId objectId);
-
-
-    /*
-    @Aggregation(pipeline = {
-            "{ $match: { 'username': { $regex: ?0, $options: 'i' } } }",
-            "{ $lookup: { from: 'users', localField: 'userID', foreignField: '_id', as: 'user' } }",
-            "{ $unwind: '$user' }",
-            "{ $project: { 'username': 1, 'user.name': 1, 'user.avatar': 1 } }"
-    })
-    Page<FollowInfo> findFollowInfoByUsernameRegex(String query, Pageable pageable);
-     */
+    @Query("{ 'isPrivate': false, 'userID': { $nin: ?0 } }")
+    List<Account> findPublicAccountsNotIn(List<ObjectId> excludedUserIDs);
+    List<Account> findByIsPrivateFalse();
 }

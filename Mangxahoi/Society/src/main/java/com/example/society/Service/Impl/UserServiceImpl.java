@@ -25,22 +25,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserMapper userMapper;
     @Override
-    public UserResponse getUser(String userId) {
-        User user = userRepository.findUserByUserID(new ObjectId(userId))
+    public UserResponse getUser(ObjectId userId) {
+        User user = userRepository.findUserByUserID(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        return userMapper.toUserResponseDTO(user);
+        return userMapper.toUserResponse(user);
     }
 
     @Override
-    public List<BubbleResponse> searchUsers(String query, String userId) {
-        //Luôn lấy ra 10 người
-        Pageable pageable = PageRequest.of(0, 10);
+    public List<BubbleResponse> searchUsers(String query, ObjectId userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
         List<User> users = userRepository.findByNameContainingIgnoreCase(query, pageable).getContent();
 
         List<BubbleResponse> bubbleResponseList = new ArrayList<>();
         for (User user : users) {
             BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(),user.getName(),user.getAvatar());
-            if(!user.getUserID().toString().equals(userId))
+            if(!user.getUserID().equals(userId))
                 bubbleResponseList.add(bubbleResponse);
         }
         return bubbleResponseList;

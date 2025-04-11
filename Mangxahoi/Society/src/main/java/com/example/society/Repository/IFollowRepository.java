@@ -17,7 +17,7 @@ public interface IFollowRepository extends MongoRepository<Follow, ObjectId> {
     List<Follow> getFollowing(ObjectId userId);
 
     @Query(value = "{ 'user2': ?0, 'status': 'ACCEPT' }")
-    List<Follow> getFollowes(ObjectId userId);
+    List<Follow> getFollower(ObjectId userId);
 
     @Query(value = "{ 'user2': ?0, 'status': 'REQUEST' }")
     List<Follow> getFollowRequests(ObjectId userId);

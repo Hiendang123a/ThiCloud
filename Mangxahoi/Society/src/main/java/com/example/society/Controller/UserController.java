@@ -25,15 +25,17 @@ public class UserController {
     public APIResponse<UserResponse> getUser() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         APIResponse<UserResponse> apiResponse = new APIResponse<>();
-        apiResponse.setResult(userService.getUser(userId));
+        apiResponse.setResult(userService.getUser(new ObjectId(userId)));
         return apiResponse;
     }
 
     @GetMapping("/search")
-    public APIResponse<List<BubbleResponse>> searchUsers(@RequestParam String query) {
+    public APIResponse<List<BubbleResponse>> searchUsers(@RequestParam String query,
+                                                         @RequestParam(defaultValue = "0") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         APIResponse<List<BubbleResponse>> apiResponse = new APIResponse<>();
-        apiResponse.setResult(userService.searchUsers(query,userId));
+        apiResponse.setResult(userService.searchUsers(query,new ObjectId(userId),page,size));
         return apiResponse;
     }
 }

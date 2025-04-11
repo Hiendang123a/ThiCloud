@@ -12,7 +12,7 @@ public interface UserMapper {
     User toUser (UserDTO userDTO);
 
     @Mapping(source = "userID", target = "userID", qualifiedByName = "objectIDToString")
-    UserResponse toUserResponseDTO (User user);
+    UserResponse toUserResponse(User user);
 }
 
 

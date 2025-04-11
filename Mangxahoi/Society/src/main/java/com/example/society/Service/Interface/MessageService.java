@@ -5,6 +5,8 @@ import com.example.society.DTO.Request.ReadMessageRequest;
 import com.example.society.DTO.Request.MarkSeenRequest;
 import com.example.society.DTO.Response.LastMessageResponse;
 import com.example.society.DTO.Response.MessageResponse;
+import org.bson.types.ObjectId;
+
 import java.util.List;
 
 public interface MessageService {
@@ -14,6 +16,6 @@ public interface MessageService {
 
         void markMessagesAsSeen(MarkSeenRequest markSeenRequest);
 
-        void softDeleteMessage(String messageID);
-        List<LastMessageResponse> lastMessage(String userID);
+        void softDeleteMessage(ObjectId messageID);
+        List<LastMessageResponse> lastMessage(ObjectId userID);
 }

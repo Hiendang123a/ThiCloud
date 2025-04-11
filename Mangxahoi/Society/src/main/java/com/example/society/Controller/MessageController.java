@@ -8,6 +8,7 @@ import com.example.society.DTO.Response.LastMessageResponse;
 import com.example.society.DTO.Response.MessageResponse;
 import com.example.society.Service.Interface.MessageService;
 import jakarta.validation.Valid;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +36,7 @@ public class MessageController {
     public APIResponse<List<LastMessageResponse>> lastMessage(){
         String userID = SecurityContextHolder.getContext().getAuthentication().getName();
         APIResponse<List<LastMessageResponse>> apiResponse = new APIResponse<>();
-        apiResponse.setResult(messageService.lastMessage(userID));
+        apiResponse.setResult(messageService.lastMessage(new ObjectId(userID)));
         return apiResponse;
     }
 
@@ -63,7 +64,7 @@ public class MessageController {
     public APIResponse<Void> deleteMessage(@PathVariable String messageID)
     {
         APIResponse<Void> apiResponse = new APIResponse<>();
-        messageService.softDeleteMessage(messageID);
+        messageService.softDeleteMessage(new ObjectId(messageID));
         return apiResponse;
     }
 }

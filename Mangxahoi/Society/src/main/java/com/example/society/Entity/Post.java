@@ -22,9 +22,11 @@ public class Post {
     private ObjectId postID;
     private ObjectId userID;
     private String content;
-    private String imageName;
+    private String imageUrl;
     private List<ObjectId> emotions;
     private List<ObjectId> comments;
-    @Field(name = "created_at")
     private Date createdAt = new Date();
+    @Field("emotionsCount")
+    private int emotionsCount;
+    private int commentsCount;
 }

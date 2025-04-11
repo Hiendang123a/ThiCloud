@@ -82,36 +82,35 @@ public class MessageServiceImpl implements MessageService {
 
     @Transactional
     @Override
-    public void softDeleteMessage(String messageID) {
-        Message message = messageRepository.findById(new ObjectId(messageID))
+    public void softDeleteMessage(ObjectId messageID) {
+        Message message = messageRepository.findById(messageID)
                 .orElseThrow(() -> new AppException(ErrorCode.SYSTEM_ERROR));
         message.setDeleted(true);
         messageRepository.save(message);
     }
 
     @Override
-    public List<LastMessageResponse> lastMessage(String userID) {
-        ObjectId userObjectId = new ObjectId(userID);
+    public List<LastMessageResponse> lastMessage(ObjectId userID) {
         List<LastMessageResponse> lastMessageResponseList = new ArrayList<>();
 
         // Thêm bản thân người dùng vào đầu danh sách (chỉ có thông tin bản thân, không có tin nhắn)
-        userRepository.findUserByUserID(userObjectId).ifPresent(user -> {
+        userRepository.findUserByUserID(userID).ifPresent(user -> {
             BubbleResponse bubbleResponse = new BubbleResponse(user.getUserID(), user.getName(), user.getAvatar());
             lastMessageResponseList.add(new LastMessageResponse(bubbleResponse, null, null));
         });
 
         // Lấy danh sách tin nhắn gần nhất
-        List<Message> lastMessages = messageRepository.findLastMessages(userObjectId);
+        List<Message> lastMessages = messageRepository.findLastMessages(userID);
 
         for (Message message : lastMessages) {
             // Xác định người còn lại trong tin nhắn (người gửi hoặc người nhận)
-            ObjectId otherUserId = message.getSenderID().equals(userObjectId) ? message.getReceiverID() : message.getSenderID();
+            ObjectId otherUserId = message.getSenderID().equals(userID) ? message.getReceiverID() : message.getSenderID();
 
             // Follow chéo
             boolean isFollowed = isMutualFollow(message.getSenderID(), message.getReceiverID());
 
             // Lọc tin nhắn nhận được và kiểm tra điều kiện theo dõi
-            if (message.getReceiverID().equals(userObjectId)) {
+            if (message.getReceiverID().equals(userID)) {
                 if (isFollowed) {
                     // Thêm tin nhắn vào danh sách nếu người gửi đã follow mình
                     userRepository.findUserByUserID(otherUserId).ifPresent(user -> {
@@ -134,7 +133,7 @@ public class MessageServiceImpl implements MessageService {
         return lastMessageResponseList;
     }
 
-    private boolean isMutualFollow(ObjectId user1, ObjectId user2) {
+    public boolean isMutualFollow(ObjectId user1, ObjectId user2) {
         Optional<Follow> follow1 = followRepository.findByUser1AndUser2AndStatus(user1, user2, FollowAction.ACCEPT);
         Optional<Follow> follow2 = followRepository.findByUser1AndUser2AndStatus(user2, user1, FollowAction.ACCEPT);
         return follow1.isPresent() && follow2.isPresent();

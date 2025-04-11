@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestURI = request.getRequestURI();
 
         // Bỏ qua kiểm tra token cho các API mở
-        if (requestURI.startsWith("/api/account/") || requestURI.startsWith("/api/token/refresh")) {
+        if (requestURI.startsWith("/api/account/") || requestURI.startsWith("/api/token/refresh") || requestURI.startsWith("/api/post/feed")) {
             filterChain.doFilter(request, response);
             return;
         }
