@@ -21,6 +21,8 @@ public enum ErrorCode {
     USER_NOT_FOUND(1010, "User not found", HttpStatus.BAD_REQUEST),
     PHONE_FIELD(1011, "Phone cannot be empty", HttpStatus.BAD_REQUEST),
     INVALID_PHONE(1012, "Invalid phone", HttpStatus.BAD_REQUEST),
+    INVALID_REPASS(1004, "Password not match!", HttpStatus.BAD_REQUEST),
+
 
     INVALID_TOKEN(1001, "Invalid Token!", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1001, "Access denied: Token is required to use this API", HttpStatus.UNAUTHORIZED),
@@ -28,7 +30,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(1014, "Invalid Refresh Token!", HttpStatus.BAD_REQUEST),
 
 
-    // 2xxx: Validation Errors (Lỗi kiểm tra đầu vào)
+    // 2xxx: Validation Errors (Lỗi Kiểm tra đầu vào)
     UNDERAGE_USER(2001, "You must be at least 18 years old to register", HttpStatus.BAD_REQUEST),
     USERNAME_ALREADY_EXISTS(2002, "Email is already registered", HttpStatus.CONFLICT),
 

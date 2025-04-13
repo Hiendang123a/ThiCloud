@@ -38,7 +38,7 @@ public class FollowServiceImpl implements FollowService {
             return followResponse;
         }
 
-        boolean receiverIsPrivate = accountReceiver.get().isPrivate();
+        boolean receiverIsPrivate = accountReceiver.get().getIsPrivate();
 
         Optional<Follow> existingFollow = followRepository.findByUser1AndUser2(senderId, receiverId);
         if (existingFollow.isPresent()) {

@@ -1,5 +1,6 @@
 package com.example.society.Service.Impl;
 import com.example.society.DTO.Request.*;
+import com.example.society.DTO.Response.UpdateAccountResponse;
 import com.example.society.Mapper.AccountMapper;
 import com.example.society.Mapper.UserMapper;
 import com.example.society.DTO.Response.AuthResponse;
@@ -14,6 +15,7 @@ import com.example.society.Mail.UtilsEmail;
 import com.example.society.Repository.IUserRepository;
 import com.example.society.Security.TokenProvider;
 import com.example.society.Service.Interface.AccountService;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -156,6 +158,45 @@ public class AccountServiceImpl implements AccountService {
         return new AuthResponse(tokenProvider.generateAccessToken(account.getUserID().toString()), tokenProvider.generateRefreshToken(account.getUserID().toString()), account.getUserID().toString());
     }
 
+    @Override
+    public boolean getUserPrivacyStatus(ObjectId userID) {
+        Account account = accountRepository.findByUserID(userID)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+        return account.getIsPrivate();
+    }
+
+    @Override
+    public UpdateAccountResponse updateAccount(ObjectId userID,UpdateAccountRequest updateAccountRequest) {
+        Account account = accountRepository.findByUserID(userID)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if (updateAccountRequest.getUsername() != null) {
+            account.setUsername(updateAccountRequest.getUsername());
+        }
+        if (updateAccountRequest.getLastLoginAt() != null) {
+            account.setLastLoginAt(updateAccountRequest.getLastLoginAt());
+        }
+        if (updateAccountRequest.getIsPrivate() != null) {
+            account.setIsPrivate(updateAccountRequest.getIsPrivate());
+        }
+        accountRepository.save(account);
+        return accountMapper.toUpdateAccountResponse(account);
+    }
+
+    @Override
+    public void updatePassword(ObjectId userID, RepassRequest repassRequest) {
+        Account account = accountRepository.findByUserID(userID)
+                .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
+        if (!passwordEncoder.matches(repassRequest.getCurrentPassword(), account.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS);
+        }
+
+        if(!repassRequest.getNewPassword().equals(repassRequest.getReNewPassword()))
+            throw new AppException(ErrorCode.INVALID_REPASS);
+
+        account.setPassword(passwordEncoder.encode(repassRequest.getNewPassword()));
+        accountRepository.save(account);
+    }
 
     public boolean validateUser(Date dob) {
         Calendar calendar = Calendar.getInstance();

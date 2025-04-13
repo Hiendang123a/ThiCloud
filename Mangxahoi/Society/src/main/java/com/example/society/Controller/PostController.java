@@ -5,8 +5,6 @@ import com.example.society.DTO.Response.PostResponse;
 import com.example.society.Service.Interface.PostService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

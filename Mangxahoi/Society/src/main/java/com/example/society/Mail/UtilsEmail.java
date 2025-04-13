@@ -29,12 +29,10 @@ public class UtilsEmail {
     }
     public static String CreateContent(String otp)
     {
-        StringBuilder message = new StringBuilder();
-        message.append("Xác nhận OTP cho tài khoản của bạn:<br>");
-        message.append("Để xác nhận tài khoản của bạn, vui lòng nhập mã OTP sau:<br>");
-        message.append("OTP của bạn là: ").append(otp).append("<br>");
-        message.append("Mã OTP này sẽ hết hạn trong vòng 5 phút.<br>");
-        message.append("Xin cảm ơn!<br>");
-        return message.toString();
+        return "Xác nhận OTP cho tài khoản của bạn:<br>" +
+                "Để xác nhận tài khoản của bạn, vui lòng nhập mã OTP sau:<br>" +
+                "OTP của bạn là: " + otp + "<br>" +
+                "Mã OTP này sẽ hết hạn trong vòng 5 phút.<br>" +
+                "Xin cảm ơn!<br>";
     }
 }

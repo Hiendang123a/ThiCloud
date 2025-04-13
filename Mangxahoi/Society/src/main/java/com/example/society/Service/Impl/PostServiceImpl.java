@@ -59,7 +59,7 @@ public class PostServiceImpl implements PostService {
         for (ObjectId followObjectId : followObjectIds) {
             Optional<Account> account = accountRepository.findByUserID(followObjectId);
             if(account.isPresent()){
-                if(account.get().isPrivate())
+                if(account.get().getIsPrivate())
                 {
                     System.out.println("followObjectId: " + followObjectId);
                     if(messageService.isMutualFollow(userID, followObjectId))

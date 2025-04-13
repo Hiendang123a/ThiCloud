@@ -6,6 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Objects;
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,12 +32,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIResponse> handleValidationExceptions(MethodArgumentNotValidException exception) {
-        String enumKey = exception.getFieldError().getDefaultMessage();
+        String enumKey = Objects.requireNonNull(exception.getFieldError()).getDefaultMessage();
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
         try{
             errorCode = ErrorCode.valueOf(enumKey);
         }
-        catch (IllegalArgumentException e){}
+        catch (IllegalArgumentException ignored){}
         APIResponse apiResponse = new APIResponse();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());

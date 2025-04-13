@@ -103,7 +103,7 @@ public class FollowController {
 
     // ✅ Lấy số lượng following
     @GetMapping("/following/count")
-    public APIResponse<Integer> getFollowingCount() {
+    public APIResponse<Integer>     getFollowingCount() {
         String senderID = SecurityContextHolder.getContext().getAuthentication().getName();
         APIResponse<Integer> apiResponse = new APIResponse<>();
         apiResponse.setResult(followService.getFollowingCount(new ObjectId(senderID)));

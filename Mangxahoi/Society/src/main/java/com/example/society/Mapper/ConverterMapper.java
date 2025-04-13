@@ -6,7 +6,6 @@ import org.mapstruct.Named;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ConverterMapper {

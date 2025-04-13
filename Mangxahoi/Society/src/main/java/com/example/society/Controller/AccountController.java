@@ -6,6 +6,7 @@ import com.example.society.DTO.Response.AuthResponse;
 import com.example.society.DTO.Response.OTPResponse;
 import com.example.society.Service.Interface.AccountService;
 import jakarta.validation.Valid;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,13 @@ public class AccountController {
     public APIResponse<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
         APIResponse<AuthResponse> apiResponse = new APIResponse<>();
         apiResponse.setResult(accountService.login(loginRequest));
+        return apiResponse;
+    }
+
+    @GetMapping("/{userID}/is-private")
+    public APIResponse<Boolean> checkPrivateStatus(@PathVariable String userID) {
+        APIResponse<Boolean> apiResponse = new APIResponse<>();
+        apiResponse.setResult(accountService.getUserPrivacyStatus(new ObjectId(userID)));
         return apiResponse;
     }
 }

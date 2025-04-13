@@ -15,14 +15,12 @@ import java.util.Date;
 public class Account {
     @Id
     private ObjectId accountID;
-
     @Indexed(unique = true)
     private ObjectId userID;
-
     private String username;
     private String password;
     private int failedAttempts;
     private Date lastLoginAt;
     private Date createdAt;
-    private boolean isPrivate = false;
+    private Boolean isPrivate = false;
 }
