@@ -12,8 +12,10 @@ import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface AccountService {
     @POST("/api/account/login")
@@ -26,4 +28,6 @@ public interface AccountService {
     Call<APIResponse<OTPResponse>> forgetPass(@Body Map<String, String> request);
     @PUT("/api/account/verify-email-repass")
     Call<APIResponse<Void>> verifyEmailRepass(@Body VerifyOTPRepassRequest verifyOTPRepassRequest);
+    @GET("/api/account/{userID}/is-private")
+    Call<APIResponse<Boolean>> checkPrivateStatus(@Path("userID") String userID);
 }

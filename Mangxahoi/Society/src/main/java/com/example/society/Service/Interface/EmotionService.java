@@ -8,4 +8,5 @@ import com.example.society.DTO.Response.EmotionPostResponse;
 public interface EmotionService {
     EmotionPostResponse emotionPost(EmotionPostRequest emotionPostRequest);
     EmotionCommentResponse emotionComment(EmotionCommentRequest emotionCommentRequest);
+    String getEmotion(EmotionPostRequest emotionPostRequest);
 }

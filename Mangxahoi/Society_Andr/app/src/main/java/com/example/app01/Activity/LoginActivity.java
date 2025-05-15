@@ -99,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
                     tokenManager.clearTokens();
                     tokenManager.saveTokens(accessToken,refreshToken,userID);
                     Log.e("UserID", userID);
-                    startActivity(new Intent(LoginActivity.this, ChatActivity.class));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
                     try {
                         Gson gson = new Gson();

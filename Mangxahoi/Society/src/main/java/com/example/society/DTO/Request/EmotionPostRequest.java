@@ -11,4 +11,5 @@ import lombok.Setter;
 public class EmotionPostRequest {
     String postID;
     String userID;
+    String actionType;
 }

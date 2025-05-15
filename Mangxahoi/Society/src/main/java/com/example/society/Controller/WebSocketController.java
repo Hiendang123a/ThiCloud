@@ -18,6 +18,8 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Controller
 public class WebSocketController {
     @Autowired
@@ -42,7 +44,7 @@ public class WebSocketController {
 
     @MessageMapping("/sendEmotionPost/{receiverId}")
     public void sendEmotionPost(@Payload EmotionPostRequest emotionPostRequest,
-                                 @DestinationVariable String receiverId) {
+                                @DestinationVariable String receiverId) {
         String destination = "/user/" + receiverId + "/queue/sendEmotionPost";
         EmotionPostResponse emotionPostResponse = emotionService.emotionPost(emotionPostRequest);
         messagingTemplate.convertAndSend(destination, emotionPostRequest);
@@ -59,13 +61,13 @@ public class WebSocketController {
         messagingTemplate.convertAndSendToUser(emotionCommentResponse.getUserID(), "/queue/sendEmotionComment", emotionCommentResponse);
     }
 
-    @MessageMapping("/sendComment/{receiverId}")
+    @MessageMapping("/sendComment/{postId}")
     public void sendComment(@Payload CommentRequest commentRequest,
-                            @DestinationVariable String receiverId) {
-        String destination = "/user/" + receiverId + "/queue/sendComment";
+                            @DestinationVariable String postId) {
+        // Logging để kiểm tra commentRequest và commentResponse
+
         CommentResponse commentResponse = commentService.comment(commentRequest);
-        messagingTemplate.convertAndSend(destination, commentResponse);
-        messagingTemplate.convertAndSendToUser(commentResponse.getUserID(), "/queue/sendComment", commentResponse);
+        messagingTemplate.convertAndSend("/user/comments/" + postId, commentResponse);
     }
 }
 

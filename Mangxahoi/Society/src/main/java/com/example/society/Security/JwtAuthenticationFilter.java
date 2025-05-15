@@ -29,12 +29,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-
+        if (requestURI.startsWith("/api/user/is/") || requestURI.startsWith("/api/post/getCommentByPostID")|| requestURI.startsWith("/api/post/getComment")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         // Bỏ qua kiểm tra token cho các API mở
         if (requestURI.startsWith("/api/account/") || requestURI.startsWith("/api/token/refresh") || requestURI.startsWith("/api/post/feed")) {
             filterChain.doFilter(request, response);
             return;
         }
+
         if (requestURI.startsWith("/ws") || requestURI.startsWith("/sockjs")) {
             filterChain.doFilter(request, response);
             return;

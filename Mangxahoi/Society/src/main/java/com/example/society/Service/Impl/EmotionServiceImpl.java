@@ -21,7 +21,6 @@ public class EmotionServiceImpl implements EmotionService {
 
     @Autowired
     IPostEmotionRepository postEmotionRepository;
-
     @Autowired
     ICommentEmotionRepository commentEmotionRepository;
 
@@ -39,25 +38,42 @@ public class EmotionServiceImpl implements EmotionService {
 
     @Override
     public EmotionPostResponse emotionPost(EmotionPostRequest emotionPostRequest) {
-        PostEmotion postEmotion = new PostEmotion();
-        postEmotion.setUserID(new ObjectId(emotionPostRequest.getUserID()));
-        postEmotion.setCreatedAt(new Date());
-
-        postEmotionRepository.save(postEmotion);
+        // Lấy thông tin bài viết dựa trên postID
         Optional<Post> post = postRepository.findByPostID(new ObjectId(emotionPostRequest.getPostID()));
-
         Post postEntity = post.orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
 
-        postEntity.getEmotions().add(postEmotion.getEmotionID());
+        ObjectId postID = new ObjectId(emotionPostRequest.getPostID());
+        ObjectId userID = new ObjectId(emotionPostRequest.getUserID());
+
+        // Lấy thông tin userEmotion để xử lý like/unlike
+        Optional<PostEmotion> existingEmotion = postEmotionRepository.findByPostIDAndUserID(postID, userID);
+        boolean isLiked = existingEmotion.isPresent();
+
+        if ("like".equals(emotionPostRequest.getActionType()) && !isLiked) {
+            // Nếu là "like" và chưa like, thêm emotion
+            PostEmotion postEmotion = new PostEmotion();
+            postEmotion.setPostID(postID); // ✅ BỔ SUNG DÒNG NÀY
+            postEmotion.setUserID(userID);
+            postEmotion.setCreatedAt(new Date());
+            postEmotionRepository.save(postEmotion);
+            postEntity.getEmotions().add(postEmotion.getEmotionID());
+        } else if ("unlike".equals(emotionPostRequest.getActionType()) && isLiked) {
+            // Nếu là "unlike" và đã like
+            PostEmotion postEmotion = existingEmotion.get();
+            postEntity.getEmotions().remove(postEmotion.getEmotionID());
+            postEmotionRepository.delete(postEmotion);
+        }
+
+        // Cập nhật lại số lượng emotions
         postEntity.setEmotionsCount(postEntity.getEmotions().size());
         postRepository.save(postEntity);
 
-        User user = userRepository.findUserByUserID(new ObjectId(emotionPostRequest.getUserID()))
-                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
+        // Trả về thông tin EmotionPostResponse
+        User user = userRepository.findUserByUserID(userID)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        return userMapper.toEmotionPostResponse(user, postEmotion);
+        return userMapper.toEmotionPostResponse(user, existingEmotion.orElse(null));
     }
-
 
     @Override
     public EmotionCommentResponse emotionComment(EmotionCommentRequest emotionCommentRequest) {
@@ -78,5 +94,14 @@ public class EmotionServiceImpl implements EmotionService {
                 .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
 
         return userMapper.toEmotionCommentResponse(user, commentEmotion);
+    }
+
+    @Override
+    public String getEmotion(EmotionPostRequest emotionPostRequest) {
+        ObjectId userID = new ObjectId(emotionPostRequest.getUserID());
+        ObjectId postID = new ObjectId(emotionPostRequest.getPostID());
+        Optional<PostEmotion> postEmotion = postEmotionRepository.findByPostIDAndUserID(postID,userID);
+        postEmotion.orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
+        return postEmotion.get().getEmotionID().toString();
     }
 }

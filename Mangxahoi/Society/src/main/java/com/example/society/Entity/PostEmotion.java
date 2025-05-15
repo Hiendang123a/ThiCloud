@@ -18,9 +18,7 @@ import java.util.Date;
 public class PostEmotion {
     @Id
     private ObjectId emotionID;
-
-    @Indexed(unique = true)
     private ObjectId userID;
-
+    private ObjectId postID;
     private Date createdAt;
 }

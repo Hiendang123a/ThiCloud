@@ -88,7 +88,6 @@ public class TokenManager {
                     APIResponse<AuthResponse> apiResponse = response.body();
                     saveTokens(apiResponse.getResult().getAccessToken(), apiResponse.getResult().getRefreshToken(), getUserID());
                     Log.d("TokenManager", "Làm mới token thành công!");
-
                     if (onComplete != null) {
                         onComplete.run();  // Chỉ gọi lại API nếu làm mới token thành công
                     }

@@ -1,5 +1,6 @@
 package com.example.society.Service.Impl;
 
+import com.example.society.DTO.Request.CreatePostRequest;
 import com.example.society.DTO.Response.PostResponse;
 import com.example.society.Entity.Account;
 import com.example.society.Entity.Follow;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,7 +63,6 @@ public class PostServiceImpl implements PostService {
             if(account.isPresent()){
                 if(account.get().getIsPrivate())
                 {
-                    System.out.println("followObjectId: " + followObjectId);
                     if(messageService.isMutualFollow(userID, followObjectId))
                         validFollowIds.add(followObjectId);
                 }
@@ -111,5 +112,16 @@ public class PostServiceImpl implements PostService {
         Page<Post> postsPage = postRepository.findTrendingPostsFromPublicAccounts(publicUserIDs,pageable);
         List<Post> posts = new ArrayList<>(postsPage.getContent());
         return postMapper.toPostResponseList(posts);
+    }
+
+    @Override
+    public Void createPost(CreatePostRequest createPostRequest) {
+        Post post = new Post();
+        post.setUserID(new ObjectId(createPostRequest.getUserID()));
+        post.setContent(createPostRequest.getContent());
+        post.setImageUrl(createPostRequest.getImageUrl());
+        post.setCreatedAt(new Date());
+        postRepository.save(post);
+        return null;
     }
 }

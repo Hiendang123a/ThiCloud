@@ -28,7 +28,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class ChangePassword extends AppCompatActivity {
-    private TextView gmailTV;
     private EditText passwordET, cfpasswordET;
     private Button changePassBtn;
     @Override
@@ -41,7 +40,6 @@ public class ChangePassword extends AppCompatActivity {
             return insets;
         });
 
-        gmailTV = findViewById(R.id.gmailTV);
         passwordET = findViewById(R.id.passwordET);
         cfpasswordET = findViewById(R.id.cfpasswordET);
         changePassBtn = findViewById(R.id.changePassBtn);
@@ -49,7 +47,6 @@ public class ChangePassword extends AppCompatActivity {
         String otp = getIntent().getStringExtra("otp");
         String username = getIntent().getStringExtra("username");
 
-        gmailTV.setText(username);
 
         changePassBtn.setOnClickListener(v -> {
             String password = passwordET.getText().toString();

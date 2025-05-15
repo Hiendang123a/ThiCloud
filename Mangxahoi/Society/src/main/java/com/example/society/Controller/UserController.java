@@ -29,7 +29,7 @@ public class UserController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping("/{userID}")
+    @GetMapping("/is/{userID}")
     public APIResponse<UserResponse> getUser(@PathVariable String userID) {
         APIResponse<UserResponse> apiResponse = new APIResponse<>();
         apiResponse.setResult(userService.getUser(new ObjectId(userID)));

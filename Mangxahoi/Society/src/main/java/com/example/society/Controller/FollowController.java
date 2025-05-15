@@ -39,7 +39,7 @@ public class FollowController {
 
     // ✅ Chấp nhận follow request (chỉ dành cho tài khoản private)
     @DeleteMapping("/reject")
-    public APIResponse<FollowResponse> rejectFollowRequest(@RequestParam String senderID) {
+        public APIResponse<FollowResponse> rejectFollowRequest(@RequestParam String senderID) {
         String receiverID = SecurityContextHolder.getContext().getAuthentication().getName();
         APIResponse<FollowResponse> apiResponse = new APIResponse<>();
         apiResponse.setResult(followService.rejectFollowRequest(new ObjectId(senderID), new ObjectId(receiverID)));
@@ -94,23 +94,19 @@ public class FollowController {
 
     // ✅ Lấy số lượng followers
     @GetMapping("/followers/count")
-    public APIResponse<Integer> getFollowersCount() {
-        String receiverID = SecurityContextHolder.getContext().getAuthentication().getName();
+    public APIResponse<Integer> getFollowersCount(@RequestParam String userID) {
         APIResponse<Integer> apiResponse = new APIResponse<>();
-        apiResponse.setResult(followService.getFollowersCount(new ObjectId(receiverID)));
+        apiResponse.setResult(followService.getFollowersCount(new ObjectId(userID)));
         return apiResponse;
     }
 
     // ✅ Lấy số lượng following
     @GetMapping("/following/count")
-    public APIResponse<Integer>     getFollowingCount() {
-        String senderID = SecurityContextHolder.getContext().getAuthentication().getName();
+    public APIResponse<Integer> getFollowingCount(@RequestParam String userID) {
         APIResponse<Integer> apiResponse = new APIResponse<>();
-        apiResponse.setResult(followService.getFollowingCount(new ObjectId(senderID)));
+        apiResponse.setResult(followService.getFollowingCount(new ObjectId(userID)));
         return apiResponse;
     }
-
-
 
     //is following?
     @GetMapping("/is-following/{receiverID}")
@@ -130,6 +126,7 @@ public class FollowController {
         apiResponse.setResult(followService.removeFollower(new ObjectId(senderID), new ObjectId(receiverID)));
         return apiResponse;
     }
+
     //
     @GetMapping("/status")
     public APIResponse<Boolean> checkFollowRequestStatus(@RequestParam String receiverID) {

@@ -14,6 +14,8 @@ gson = "2.8.8"
 threetenbp = "1.5.1"
 lombok = "1.18.36"
 circleimageview = "3.1.0"
+navigationFragment = "2.6.0"
+navigationUi = "2.6.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -30,6 +32,8 @@ gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 threetenbp = { group = "org.threeten", name = "threetenbp", version.ref = "threetenbp" }
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
 circleimageview = { group = "de.hdodenhof", name = "circleimageview", version.ref = "circleimageview" }
+navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 
 
 

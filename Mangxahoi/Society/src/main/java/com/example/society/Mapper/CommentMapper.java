@@ -18,5 +18,6 @@ public interface CommentMapper {
     @Mapping(source = "postComment.comments", target = "comments", qualifiedByName = "listObjectIDToListString")
     @Mapping(source = "postComment.emotionsCount", target = "emotionsCount")
     @Mapping(source = "postComment.commentsCount", target = "commentsCount")
+    @Mapping(target = "type", ignore = true)
     CommentResponse toCommentResponse(User user, PostComment postComment);
 }

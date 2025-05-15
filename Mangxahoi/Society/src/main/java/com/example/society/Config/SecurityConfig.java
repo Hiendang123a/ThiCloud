@@ -27,7 +27,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/account/**","/api/token/refresh","/api/post/feed").permitAll()  // API không cần token
+                        .requestMatchers("/api/post/getCommentByPostID","/api/post/getComment").permitAll()
+                        .requestMatchers("/api/account/**","/api/token/refresh","/api/post/feed","/api/user/is/**").permitAll()  // API không cần token
                         .requestMatchers("/ws/**", "/sockjs/**").permitAll()  // Cho phép tất cả các kết nối tới WebSocket và SockJS
                         .anyRequest().authenticated()
                 )

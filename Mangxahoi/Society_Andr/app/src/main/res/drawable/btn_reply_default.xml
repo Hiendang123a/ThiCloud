@@ -1,0 +1,8 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#E3F2FD" /> <!-- Màu nền nhẹ -->
+            <corners android:radius="24dp" /> <!-- Làm hình tròn -->
+        </shape>
+    </item>
+</selector>

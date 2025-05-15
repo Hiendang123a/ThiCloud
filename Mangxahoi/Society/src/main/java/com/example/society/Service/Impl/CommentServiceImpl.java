@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -35,10 +37,10 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponse comment(CommentRequest commentRequest) {
         PostComment postComment = new PostComment();
         postComment.setContent(commentRequest.getContent());
+        postComment.setUserID(new ObjectId(commentRequest.getUserID()));
         postComment.setCreatedAt(new Date());
         String typeComment;
         commentRepository.save(postComment);
-        //Gửi comment vào phần Post(Tức là nó là comment gốc)
         if(commentRequest.getCommentID()==null || commentRequest.getCommentID().isEmpty()){
             Optional<Post> post = postRepository.findByPostID(new ObjectId(commentRequest.getPostID()));
             Post postEntity = post.orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
@@ -65,5 +67,27 @@ public class CommentServiceImpl implements CommentService {
         CommentResponse commentResponse = commentMapper.toCommentResponse(user,postComment);
         commentResponse.setType(typeComment);
         return commentResponse;
+    }
+
+    @Override
+    public List<CommentResponse> getComment(List<ObjectId> commentList) {
+        List<PostComment> comments = commentRepository.findAllById(commentList);
+        List<CommentResponse> commentResponses = comments.stream()
+                .map(comment -> {
+                    User user = userRepository.findById(comment.getUserID()).orElse(null);
+                    return commentMapper.toCommentResponse(user, comment);
+                })
+                .collect(Collectors.toList());
+        return commentResponses;
+    }
+
+    @Override
+    public List<CommentResponse> getCommentByPostID(ObjectId postID) {
+        Optional<Post> post = postRepository.findByPostID(postID);
+        post.orElseThrow(() -> new AppException(ErrorCode.POST_NOT_EXITS));
+        List<ObjectId> comments = post.get().getComments();
+        List<CommentResponse> commentResponses = getComment(comments);
+        System.out.println(commentResponses);
+        return commentResponses;
     }
 }

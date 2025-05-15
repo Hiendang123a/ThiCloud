@@ -40,7 +40,6 @@ public class MessageController {
         return apiResponse;
     }
 
-    //doc tat ca tin nhan cua minh
     @PostMapping("read")
     public APIResponse<List<MessageResponse>> readMessages(@RequestBody ReadMessageRequest readMessageRequest) {
         String senderID = SecurityContextHolder.getContext().getAuthentication().getName();

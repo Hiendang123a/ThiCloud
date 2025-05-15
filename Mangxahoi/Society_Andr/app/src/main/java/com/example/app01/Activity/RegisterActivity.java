@@ -77,7 +77,6 @@ public class RegisterActivity extends AppCompatActivity {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         selectedImageUri = result.getData().getData();
                         if (selectedImageUri != null) {
-                            // Hiển thị ảnh lên ImageView
                             Glide.with(this)
                                     .load(selectedImageUri)
                                     .into(avatarImageView);
@@ -222,7 +221,6 @@ public class RegisterActivity extends AppCompatActivity {
         datePickerBtn = findViewById(R.id.datePickerBtn);
         signInBtn = findViewById(R.id.signInBtn);
         signUpBtn = findViewById(R.id.signUpBtn);
-
         maleRdb.setChecked(true);
         String currentDate = dateFormat.format(calendar.getTime());
         dateET.setText(currentDate);

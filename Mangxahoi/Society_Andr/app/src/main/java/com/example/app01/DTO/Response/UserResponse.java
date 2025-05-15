@@ -14,8 +14,8 @@ public class UserResponse {
     private String name;
     private String gender;
     private Date dob;
-    private String address;
-    private String hometown;
+    private String bio;
+    private String phone;
     private String avatar;
 }
 

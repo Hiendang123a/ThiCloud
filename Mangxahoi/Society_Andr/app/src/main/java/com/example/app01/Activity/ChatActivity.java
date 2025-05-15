@@ -141,7 +141,6 @@ public class ChatActivity extends AppCompatActivity {
                                     finish();
                                 }
                             }));
-                            Log.e("Vong lap Tin nhan chat","Dang lap lai");
                             getLastMessage(retrofit);
                         }
                     } catch (Exception e) {
