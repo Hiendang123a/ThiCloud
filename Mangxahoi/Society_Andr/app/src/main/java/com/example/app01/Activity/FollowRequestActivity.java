@@ -30,7 +30,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 public class FollowRequestActivity extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private FollowRequestAdapter adapter;
     private List<BubbleResponse> followRequests;

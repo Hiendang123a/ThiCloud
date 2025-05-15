@@ -19,15 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="4dp"
         android:layout_marginStart="4dp"/>
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/avatarImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/default_avatar"
-        android:background="@drawable/default_avatar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/backButton"
-        android:layout_marginStart="8dp"/>
+
 
     <!-- Caption -->
     <EditText
@@ -40,7 +32,7 @@
         android:padding="12dp"
         android:textSize="14sp"
         android:inputType="textMultiLine"
-        app:layout_constraintTop_toBottomOf="@id/avatarImage"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="12dp"/>

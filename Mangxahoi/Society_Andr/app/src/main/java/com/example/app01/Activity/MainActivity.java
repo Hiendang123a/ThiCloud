@@ -40,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
         ImageView btn_image = findViewById(R.id.nav_profile);
         ImageView btn_shop = findViewById(R.id.nav_shop);
         ImageView btn_reels = findViewById(R.id.nav_reels);
-
+        ImageView btn_search = findViewById(R.id.nav_search);
         btn_image.setOnClickListener(v -> {
             checkTokenAndProceed(ProfileUIActivity.class);
         });
 
         btn_shop.setOnClickListener(v -> checkTokenAndProceed(ChatActivity.class));
         btn_reels.setOnClickListener(v -> checkTokenAndProceed(PostFeedActivity.class));
+        btn_search.setOnClickListener(v -> checkTokenAndProceed(SearchActivity.class));
         post = findViewById(R.id.recycler_posts);
         WebSocketManager webSocketManager = new WebSocketManager();
         webSocketManager.connectWebSocket();

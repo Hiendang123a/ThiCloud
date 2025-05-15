@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,7 @@ import retrofit2.Retrofit;
 
 public class ChatActivity extends AppCompatActivity {
     private WebSocketManager webSocketManager;
-    private Button logoutButton;
+    private ImageView btnback;
     public RecyclerView rc_bubbles, rc_messages;
     private BubbleAdapter bubbleAdapter;
     private ChatAdapter chatAdapter;
@@ -66,13 +67,8 @@ public class ChatActivity extends AppCompatActivity {
         }));
         rc_bubbles = findViewById(R.id.rc_bubbles);
         rc_messages = findViewById(R.id.rc_messages);
-        logoutButton = findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(v->{
-            TokenManager tokenManager = TokenManager.getInstance(getApplicationContext());
-            tokenManager.clearTokens();
-            startActivity(new Intent(ChatActivity.this, MainActivity.class));
-            finish();
-        });
+        btnback = findViewById(R.id.btnBack);
+        btnback.setOnClickListener(v-> finish());
         Retrofit retrofit = RetrofitClient.getRetrofitInstance(getApplicationContext());
         bubbleResponseList = new ArrayList<>();
         status = new ArrayList<>();

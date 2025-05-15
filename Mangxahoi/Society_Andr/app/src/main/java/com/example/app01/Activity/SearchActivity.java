@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +30,7 @@ public class SearchActivity extends AppCompatActivity {
     private SearchView searchView;
     private RecyclerView recyclerView;
     private SearchAdapter adapter;
+    ImageView btnBack;
     private FollowViewModel followViewModel;
     private final List<BubbleResponse> userList = new ArrayList<>();
     private final Handler searchHandler = new Handler();
@@ -54,7 +56,8 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new SearchAdapter(this, userList);
         recyclerView.setAdapter(adapter);
-
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v->finish());
         followViewModel = new ViewModelProvider(this).get(FollowViewModel.class);
 
         followViewModel.getSearchResults().observe(this, follows -> {

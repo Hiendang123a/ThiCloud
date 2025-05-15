@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.app01.Activity.CommentActivity;
+import com.example.app01.Activity.FollowManagerActivity;
+import com.example.app01.Activity.FollowRequestActivity;
 import com.example.app01.Activity.LoginActivity;
 import com.example.app01.Api.PostService;
 import com.example.app01.Api.RetrofitClient;
@@ -88,6 +90,36 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.Post>{
             intent.putExtra("postID", postResponse.getPostID());  // Truyền postID để có thể lấy bình luận của bài viết
             Log.d("Tag", postResponse.getPostID());
             mContext.startActivity(intent);
+        });
+
+        holder.nav_profile.setOnClickListener(v -> {
+
+            String userId = TokenManager.getInstance(mContext).getUserID();
+
+            if (userId == null || userId.isEmpty()) {
+                // Chưa đăng nhập, chuyển sang màn hình Login
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                mContext.startActivity(intent);
+            } else {
+                // Đã đăng nhập, chuyển sang FollowManagerActivity
+                Intent intent = new Intent(mContext, FollowManagerActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.username.setOnClickListener(v -> {
+
+            String userId = TokenManager.getInstance(mContext).getUserID();
+
+            if (userId == null || userId.isEmpty()) {
+                // Chưa đăng nhập, chuyển sang màn hình Login
+                Intent intent = new Intent(mContext, LoginActivity.class);
+                mContext.startActivity(intent);
+            } else {
+                // Đã đăng nhập, chuyển sang FollowManagerActivity
+                Intent intent = new Intent(mContext, FollowRequestActivity.class);
+                mContext.startActivity(intent);
+            }
         });
     }
 

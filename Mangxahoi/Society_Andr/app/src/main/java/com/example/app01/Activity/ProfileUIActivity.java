@@ -44,7 +44,7 @@ import retrofit2.Response;
 public class ProfileUIActivity extends AppCompatActivity {
     private GalleryAdapter galleryAdapter;
     private LinearLayout layoutContainer;
-    private ImageView btn_menu;
+    private ImageView btn_menu, btnBack;
     private Button btnMessage, btnFollow;
     private CircleImageView img_avatar;
     private TextView txt_username, txt_bio, txt_followers, txt_following;
@@ -68,6 +68,8 @@ public class ProfileUIActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerGallery);
         galleryAdapter = new GalleryAdapter(this, null);
         recyclerView.setAdapter(galleryAdapter);
+        btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> finish());
         btn_menu = findViewById(R.id.btnMenu);
         btn_menu.setOnClickListener(v -> {
             View popupView = getLayoutInflater().inflate(R.layout.custom_popup_menu, null);
@@ -99,6 +101,10 @@ public class ProfileUIActivity extends AppCompatActivity {
 
             popupView.findViewById(R.id.btnLogout).setOnClickListener(view -> {
                 Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+                TokenManager.getInstance(getApplicationContext()).clearTokens();
+
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 popupWindow.dismiss();
             });
         });
@@ -150,15 +156,14 @@ public class ProfileUIActivity extends AppCompatActivity {
             Intent intent = new Intent(ProfileUIActivity.this, FollowRequestActivity.class);
             startActivity(intent);
         });
-        /*
-        //go to noti
+
+
         btn_notification.setOnClickListener(v-> {
             Intent intent = new Intent(ProfileUIActivity.this, NotificationActivity.class);
-            intent.putExtra("username", currentUsername); // Truyền trực tiếp username
             startActivity(intent);
         });
 
-         */
+
         //xu ly su kien click follower following
         txt_followers.setOnClickListener(v -> openFollowManager("followers"));
         txt_following.setOnClickListener(v -> openFollowManager("following"));

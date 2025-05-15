@@ -6,20 +6,34 @@
     android:orientation="vertical"
     android:id="@+id/main">
 
-    <!-- LinearLayout 1: Chứa nút Đăng xuất -->
+    <!-- Top Bar -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:gravity="center">
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/logoutButton"
+        <!-- Back Button -->
+        <ImageView
+            android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng xuất"
-            android:textSize="16sp"/>
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"/>
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Tin nhắn"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rc_bubbles"

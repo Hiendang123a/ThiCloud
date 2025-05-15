@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -43,6 +44,7 @@ public class FollowManagerActivity extends AppCompatActivity {
     private FollowingAdapter followingAdapter;
     private FollowService followService;
     private ImageView btnBack;
+    private TextView txtUsername;
     private FollowViewModel followViewModel;
     private int initialFollowerCount;
     private int initialFollowingCount;
@@ -61,22 +63,22 @@ public class FollowManagerActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> finish());
+        txtUsername = findViewById(R.id.txtUsername);
+        txtUsername.setText(getIntent().getStringExtra("username"));
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager((new LinearLayoutManager(this)));
         //
         followService = RetrofitClient.getRetrofitInstance(getApplicationContext()).create(FollowService.class);
 
         followViewModel = new ViewModelProvider(this).get(FollowViewModel.class);
-
-
         followerAdapter = new FollowerAdapter(this, new ArrayList<>(), clickedUsername -> {
-            Intent intent = new Intent(FollowManagerActivity.this, MainActivity.class);
+            Intent intent = new Intent(FollowManagerActivity.this, ProfileUIActivity.class);
             intent.putExtra("viewedUsername", clickedUsername);
             startActivity(intent);
         }, this::handleRemove);
 
         followingAdapter = new FollowingAdapter(this, new ArrayList<>(), clickedUsername -> {
-            Intent intent = new Intent(FollowManagerActivity.this, MainActivity.class);
+            Intent intent = new Intent(FollowManagerActivity.this, ProfileUIActivity.class);
             intent.putExtra("viewedUsername", clickedUsername);
             startActivity(intent);
         }, this::handleUnfollow);
@@ -140,8 +142,6 @@ public class FollowManagerActivity extends AppCompatActivity {
 
     private void handleUnfollow(BubbleResponse follow) {
         String receiverID = follow.getUserID();
-
-
         Call<APIResponse<FollowResponse>> call = followService.unfollow(receiverID);
 
         call.enqueue(new Callback<>() {
